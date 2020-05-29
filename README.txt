@@ -1,22 +1,5 @@
 # flying-m
-Hash based response monitoring.
-
-###################################################################
-#                                                                 #
-#  .d888 888          d8b                                         #                     
-# d88P"  888          Y8P                                         # 
-# 888    888                                                      # 
-# 888888 888 888  888 888 88888b.   .d88b.         88888b.d88b.   # 
-# 888    888 888  888 888 888 "88b d88P"88b        888 "888 "88b  #
-# 888    888 888  888 888 888  888 888  888 888888 888  888  888  # 
-# 888    888 Y88b 888 888 888  888 Y88b 888        888  888  888  # 
-# 888    888  "Y88888 888 888  888  "Y88888        888  888  888  # 
-#                 888                   888                       #
-#            Y8b d88P              Y8b d88P                       # 
-#             "Y88P"                "Y88P"                        #
-#                                                                 #
-#                                                                 #
-###################################################################         
+Hash based response monitoring.       
 
 Example usage:
 
@@ -50,3 +33,7 @@ for this reason in the default with only one reactive script per 10 minutes etc.
 
 The program is written to detect and use sha256 (BSD program) and fall back to sha256sum if sha256 is not found.
 You can replace these with md5 and md5sum if you want to etc.
+
+
+
+Also see https://github.com/jpegleg/change-watcher for more hash based monitoring and alerting tools.
