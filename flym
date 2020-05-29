@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+site=$1
+hash=$2
+workdir=$3
+
+which sha256 || export linuxhash=yes
+
+setup () {
+  mkdir -p $workdir/monitor/"$site"-work/ 2>/dev/null
+  touch $workdir/monitor/"$site"-work/results.out 
+  touch $workdir/monitor/"$site".log
+  echo $hash > $workdir/monitor/"$site"-work/hash.in
+}
+
+thecurl () {
+  curl https://$site -o $workdir/monitor/"$site"-work/"$site".out
+}
+
+differ () {
+  diff $workdir/monitor/"$site"-work/hash.in $workdir/monitor/"$site"-work/hash.out > $workdir/monitor/results.out
+
+  if [ -s $workdir/monitor/results.out ]; then
+    echo "$(date +%Y%m%d-%H:%M:%S) Index page modified or down on $site check! We used $hash to check." >> $workdir/monitor/"$site".log
+  else
+    echo " $(date +%Y%m%d-%H:%M:%S)  $site UP  $hash" >> $workdir/monitor/"$site".log
+  fi
+
+  rm -f $workdir/monitor/"$site"-work/*
+}
+
+linuxrun () {
+  setup
+  thecurl
+  sha256sum $workdir/monitor/"$site"-work/"$site".out | cut -d' ' -f1 > $workdir/monitor/"$site"-work/hash.out
+  differ
+}
+
+bsdrun () {
+  setup
+  thecurl
+  sha256 $workdir/monitor/"$site"-work/"$site".out | cut -d' ' -f4 > $workdir/monitor/"$site"-work/hash.out
+  differ
+}
+
+if [[ $linuxhash == yes ]]; then
+  echo "Assuming running on GNU/LINUX program sha256sum."
+  linuxrun
+else
+  echo "Assuming running on BSD program sha256."
+  bsdrun
+fi
