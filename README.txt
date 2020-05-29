@@ -20,16 +20,16 @@ Hash based response monitoring.
 
 Example usage:
 
-# cron entry for flying-m hash based monitoring
-*/1 * * * * sleep 30 && /usr/local/bin/flym yourwebsite.com 7d3b369342b78e36e8d2cf30c619602c32ff6152f1bb24e443a0021a0677440d
+# cron entry for flying-m hash based monitoring, monitoring github.com as an example:
+*/1 * * * * sleep 30 && /usr/local/bin/flym github.com 8aff2234679933a4591ec1121f2066af0b2bb4f28f6cfaa0579731d1eed09a0a
 
-Where that hash value of 7d3b369342b78e36e8d2cf30c619602c32ff6152f1bb24e443a0021a0677440d comes from this:
+Where that hash value of 8aff2234679933a4591ec1121f2066af0b2bb4f28f6cfaa0579731d1eed09a0a comes from this:
 
-curl https://yourwebsite.complace | sha256sum
+curl https://github.com | sha256sum
 
 Or write the response to disk then create the hash like the script does:
 
-curl https://yourwebsite.complace > hash.out
+curl https://github.com > hash.out
 sha256sum hash.out
 
 
@@ -47,3 +47,6 @@ Warning: For every change that stays, you will need to update the crontab entry 
 If you run SEC and react to changes, you will be continually reacting/alerting until the hash in the crontab is
 updated with the expected response or the expected response continues. The SEC config throttles emails
 for this reason in the default with only one reactive script per 10 minutes etc.
+
+The program is written to detect and use sha256 (BSD program) and fall back to sha256sum if sha256 is not found.
+You can replace these with md5 and md5sum if you want to etc.
